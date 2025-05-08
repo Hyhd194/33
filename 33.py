@@ -50,3 +50,15 @@ class TupleSpaceServer:
                 return "010ERR key does not exist"
         else:
             return "007ERR Unknown command"
+
+    def start(self):
+        print("Server started.")
+        while True:
+            client_socket, addr = self.server_socket.accept()
+            print(f"Accepted connection from {addr}")
+            client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
+            client_thread.start()
+
+if __name__ == "__main__":
+    server = TupleSpaceServer('localhost', 51234)
+    server.start()

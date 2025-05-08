@@ -8,3 +8,13 @@ def send_request(host, port, request_file):
                 sock.sendall(line.encode())
                 response = sock.recv(1024).decode()
                 print(response)
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 4:
+        print("Usage: python client.py <hostname> <port> <request_file>")
+    else:
+        host = sys.argv[1]
+        port = int(sys.argv[2])
+        request_file = sys.argv[3]
+        send_request(host, port, request_file)

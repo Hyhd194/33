@@ -23,3 +23,30 @@ class TupleSpaceServer:
                 print(f"Error handling client: {e}")
                 break
         client_socket.close()
+
+    def process_request(self, request):
+        parts = request.split()
+        command = parts[0]
+        key = parts[1]
+        value = ' '.join(parts[2:])
+
+        if command == "PUT":
+            if key in self.tuple_space:
+                return "010ERR key already exists"
+            else:
+                self.tuple_space[key] = value
+                return f"010OK ({key}, {value}) added"
+        elif command == "GET":
+            if key in self.tuple_space:
+                value = self.tuple_space.pop(key)
+                return f"010OK ({key}, {value}) removed"
+            else:
+                return "010ERR key does not exist"
+        elif command == "READ":
+            if key in self.tuple_space:
+                value = self.tuple_space[key]
+                return f"010OK ({key}, {value}) read"
+            else:
+                return "010ERR key does not exist"
+        else:
+            return "007ERR Unknown command"
